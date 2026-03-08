@@ -9,6 +9,20 @@ The system collects energy from sunlight, converts it into electrical power, and
 
 ---
 
+## 🖥️ Application UI
+
+<p align="center">
+  <img src="IMAGES/solar energy harvesating system.png" width="45%">
+  <img src="IMAGES/DISPALY-SOLAR.jpeg" width="45%">
+</p>
+
+<p align="center">
+  <img src="IMAGES/MONITOR-IMG.jpeg" width="800">
+  <img src="IMAGES/SOLAR-PROJECT.jpeg"width="800">
+</p>
+
+
+....
 ## 🎯 Objectives
 
 * To harvest renewable energy using solar panels.
