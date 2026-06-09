@@ -1,0 +1,78 @@
+#define BLYNK_TEMPLATE_ID "TMPL3kIcldBdN"
+#define BLYNK_TEMPLATE_NAME "SolarMonotringSystem"
+#define BLYNK_AUTH_TOKEN "bynV0NyojrQurqtf01XYhrpZh1kJAbHo"
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(15,2,4,16,17,5);
+
+#include "DHT.h"
+
+#define DHTPIN 23     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT11   // DHT 11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+char auth[] = BLYNK_AUTH_TOKEN;
+
+char ssid[] = "vikram";  // type your wifi name
+char pass[] = "123456789";  // type your wifi password
+
+const int VoltageSensorPin = A6;
+float Voltage;
+float Voltage_Value=0;
+
+const int CurrentSensorPin = A7;
+float Current;
+float Current_Value=0;
+
+void setup()
+{
+  lcd.begin(16, 2);
+  dht.begin();
+  pinMode(VoltageSensorPin,INPUT);
+  pinMode(CurrentSensorPin,INPUT);
+  Blynk.begin(auth, ssid, pass);
+}
+
+void loop()
+{
+  float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+
+  Voltage_Value = analogRead(VoltageSensorPin);
+  float Voltage = Voltage_Value * (3.3/1023.0);
+
+  Current_Value = analogRead(CurrentSensorPin);
+  float Current = Current_Value * (3.3/1023.0);
+    
+  lcd.setCursor(0,0);
+  lcd.print("temp:");
+  lcd.setCursor(5,0);
+  lcd.print(t);
+  lcd.setCursor(11,0);
+  lcd.print("Hu:");
+  lcd.setCursor(14,0);
+  lcd.print(h);
+  lcd.setCursor(0,1);
+  lcd.print("Volt:");
+  lcd.setCursor(5,1);
+  lcd.print(Voltage);
+  lcd.setCursor(10,1);
+  lcd.print("I:");
+  lcd.setCursor(12,1);
+  lcd.print(Current);
+  delay(500);
+
+  Blynk.virtualWrite(V0, Voltage);
+  Blynk.virtualWrite(V1, Current);
+  Blynk.virtualWrite(V2,t);
+  Blynk.virtualWrite(V3,h);
+  
+  delay(1000);
+  Blynk.run();
+}
